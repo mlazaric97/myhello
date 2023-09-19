@@ -1,0 +1,28 @@
+module myhello_mod
+
+        use, intrinsic :: iso_c_binding
+
+        implicit none
+
+        public :: hello_shell
+        
+        type ntrn_type
+                type(C_ptr) :: object = C_NULL_ptr
+        end type ntrn_type
+        interface 
+                subroutine myhello( num, string) bind(c,name="myhello")
+                        import :: c_double, c_char
+                        character(c_char), dimension(*), intent(in)::string
+                        real(c_double), intent(in), value :: num
+                end subroutine
+        end interface
+contains 
+
+        subroutine hello_shell(num,string)
+                character, intent(in) :: string
+                real,intent(in) :: num
+                call myhello(real(num,c_double), string)
+        end subroutine hello_shell
+        
+end module myhello_mod
+

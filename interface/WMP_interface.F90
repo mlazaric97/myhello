@@ -21,6 +21,13 @@ module WMPlib
                         type(c_ptr) :: this
                 end subroutine C_CNeutron__delete
 
+                function C_CNeutron__grab_a(this) result(a) bind(c,name="__wmplib_MOD_cneutron__grab_a")
+                        import
+                        type(c_ptr) :: this
+                        integer(c_int) :: a
+                end function C_CNeutron__grab_a 
+                       
+
         end interface
 
         
@@ -32,7 +39,11 @@ module WMPlib
                 module procedure CNeutron__delete
         end interface delete
 
-        public :: new,delete, CNeutron_type
+        interface grab_a
+                module procedure CNeutron__grab_a
+        end interface grab_a
+
+        public :: new, delete, grab_a, CNeutron_type
 contains 
         subroutine CNeutron__ctor(this,a)
                 type(CNeutron_type), intent(out) :: this
@@ -45,6 +56,12 @@ contains
                 call C_CNeutron__delete(this%object)
         end subroutine CNeutron__delete
 
+        subroutine CNeutron__grab_a(this)
+                type(CNeutron_type), intent(inout) :: this 
+                integer :: a
+                a = C_CNeutron__grab_a(this%object)
+        end subroutine CNeutron__grab_a
+
 end module WMPlib
 
 ! declare the type
@@ -53,7 +70,7 @@ end module WMPlib
 ! call new(this,x) where x is just some int 
 ! then we can call functions like AWR(this)
 ! don't know if that's how I want to do it but we're trying it 
-
+! Source: https://fortranwiki.org/fortran/show/Fortran+and+Cpp+objects
 
 
 

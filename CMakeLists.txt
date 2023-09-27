@@ -23,8 +23,9 @@ target_include_directories(WMPlib PUBLIC
 
 
 target_sources(WMPlib 
-	PUBLIC 
+	PRIVATE
 	${CMAKE_CURRENT_LIST_DIR}/src/WMP.hpp
+	PUBLIC
 	${CMAKE_CURRENT_LIST_DIR}/interface/WMP_interface.F90
 	)
 
